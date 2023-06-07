@@ -64,6 +64,12 @@ df_selected_team = playerstats[(playerstats.Tm.isin(selected_team)) & (playersta
 
 st.header('Display Player Stats of Selected Team(s)')
 st.write('Data Dimension: ' + str(df_selected_team.shape[0]) + ' rows and ' + str(df_selected_team.shape[1]) + ' columns.')
+st.data_editor(
+    df_selected_team,
+    column_config={
+        ''
+    }
+)
 st.dataframe(df_selected_team)
 
 # Download NBA player stats data
