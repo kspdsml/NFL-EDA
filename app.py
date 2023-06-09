@@ -168,3 +168,11 @@ with st.container():
 #         f, ax = plt.subplots(figsize=(7, 5))
 #         ax = sns.heatmap(corr, mask=mask, vmax=1, square=True)
 #     st.pyplot()
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
