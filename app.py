@@ -13,7 +13,7 @@ This app performs simple webscraping of NFL Football player stats data!
 * **Data source:** [pro-football-reference.com](https://www.pro-football-reference.com/).
 """)
 
-st.sidebar.header('User Input Features')
+st.sidebar.header('Filters')
 selected_year = st.sidebar.selectbox('Year', range(2022, 1990, -1))
 selected_category = st.sidebar.selectbox('Category', ['passing', 'rushing', 'receiving'])
 numerical_stats = {
@@ -106,25 +106,18 @@ selected_team = st.sidebar.multiselect('Team', sorted_unique_team, sorted_unique
 unique_pos = ['RB','QB','WR','FB','TE']
 selected_pos = st.sidebar.multiselect('Position', unique_pos, unique_pos)
 
-# # Sidebar - Stat selection
-# with st.sidebar:
-#     st.write('Pick stat and range')
-#     selected_stat = st.selectbox("", ('Age', 'G', 'GS', 'Att', 'Yds', 'TD', '1D', 'Lng', 'Y/A', 'Y/G', 'Fmb'))
-#     # Convert minimum and maximum values to integers
-#     start_stat = int(playerstats[selected_stat].min())-1
-#     end_stat = int(playerstats[selected_stat].max())+1
-#     start_range, end_range = st.select_slider(
-#         '',
-#         options= [str(num) for num in range(start_stat, end_stat)],
-#         value=('33', '44')
-#     )
+# # slider - Number of results
+number = st.sidebar.slider("Number of Results", 1, len(playerstats[(playerstats.Tm.isin(selected_team)) & (playerstats.Pos.isin(selected_pos))]))
+
 # Filtering data
 df_selected_team = playerstats[(playerstats.Tm.isin(selected_team)) & (playerstats.Pos.isin(selected_pos))]
 
 st.header(f'Displaying {selected_year} NFL {selected_category.capitalize()} Stats')
-st.write('Data Dimension: ' + str(df_selected_team.shape[0]) + ' rows and ' + str(df_selected_team.shape[1]) + ' columns.')
+st.write('Data Dimension: ' + str(number) + ' rows and ' + str(df_selected_team.shape[1]) + ' columns.')
 
-st.dataframe(df_selected_team,)
+
+st.dataframe(df_selected_team.head(number), hide_index=True)
+
 
 # Download NBA player stats data
 # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
@@ -137,12 +130,21 @@ def filedownload(df):
 st.markdown(filedownload(df_selected_team), unsafe_allow_html=True)
 
 def generate_plot(x, y, data, visualization):
+    conditional_hue = None
+    # if number <= 10:
+    #     conditional_hue = 'Player'
+    sns.set_style('darkgrid')
+    sns.set_color_codes("pastel")
     if visualization == 'Scatter Plot':
-        sns.set_style('darkgrid')
-        sns.set_color_codes("pastel")
-        sns.scatterplot(x=x, y=y, data=data)
-        plt.title(f'{visualization} of {y} vs {x}')
-        st.pyplot()
+        sns.scatterplot(x=x, y=y, data=data, hue=conditional_hue)
+    elif visualization == 'Bar Chart':
+        sns.barplot(x=x, y=y, data=data, ci=None, hue=conditional_hue)
+    elif visualization == 'Box Plot':
+        sns.boxplot(x=x, y=y, data=data, hue=conditional_hue)
+    plt.title(f'{visualization} of {y} vs {x}')
+    st.pyplot()
+    
+
 
 with st.container():
     st.write('Select graph type and data to compare:')
