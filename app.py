@@ -36,10 +36,11 @@ selected_team = st.sidebar.multiselect('Team', sorted_unique_team, sorted_unique
 
 unique_pos = ['RB', 'QB', 'WR', 'FB', 'TE']
 selected_pos = st.sidebar.multiselect('Position', unique_pos, unique_pos)
-
-number = st.sidebar.slider("Number of Results", 1, len(playerstats[(playerstats.Tm.isin(selected_team)) & (playerstats.Pos.isin(selected_pos))]))
-
 df_selected_team = playerstats[(playerstats.Tm.isin(selected_team)) & (playerstats.Pos.isin(selected_pos))]
+#numPlayers = len(playerstats[(playerstats.Tm.isin(selected_team)) & (playerstats.Pos.isin(selected_pos))])
+number = st.sidebar.slider("Number of Results", 1, len(df_selected_team), len(df_selected_team))
+
+
 
 # Display Data
 st.header(f'Displaying {selected_year} NFL {selected_category.capitalize()} Stats')
@@ -52,11 +53,17 @@ st.markdown(utils.filedownload(df_selected_team), unsafe_allow_html=True)
 # Visualization
 with st.container():
     st.write('Select graph type and data to compare:')
-    visualization_options = ['Bar Chart', 'Scatter Plot', 'Box Plot']
+    visualization_options = ['Bar Chart', 'Scatter Plot', 'Box Plot', 'Heatmap']
     selected_visualization = st.selectbox('Visualization', visualization_options)
+    selected_x = None
+    selected_y = None
     stat_options = numerical_stats[selected_category]
-    selected_x = st.selectbox('x var', stat_options)
-    selected_y = st.selectbox('y var', stat_options)
+    
+    if selected_visualization in ['Bar Chart', 'Scatter Plot', 'Box Plot']:
+        selected_x = st.selectbox('x var', stat_options)
+        selected_y = st.selectbox('y var', stat_options)
+    
+
     
     if st.button('Generate'):
         utils.generate_plot(selected_x, selected_y, df_selected_team.head(number), selected_visualization)

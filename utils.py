@@ -54,33 +54,35 @@ def load_data(year, category):
         raw = df.drop(df[df.Age == 'Age'].index) # Deletes repeating headers in content
         raw = raw.fillna(0)
         playerstats = raw.drop(['Rk'], axis=1)
-        columns_to_convert = ['Age', 'G', 'GS', 'Tgt', 'Rec', 'Ctch%', 'Yds', 'Y/R', 'TD', '1D', 'Lng', 'Y/Tgt', 'R/G', 'Y/G', 'Fmb']
+        columns_to_convert = ['Age', 'G', 'GS', 'Tgt', 'Rec', 'Yds', 'Y/R', 'TD', '1D', 'Lng', 'Y/Tgt', 'R/G', 'Y/G', 'Fmb']
         playerstats[columns_to_convert] = playerstats[columns_to_convert].apply(pd.to_numeric, errors='coerce', downcast='integer')
+        playerstats['Ctch%'] = playerstats['Rec'] / playerstats['Tgt']
         return playerstats
 
 def preprocess_data(playerstats, selected_team, selected_pos):
     pass
 
-# def generate_plot(x, y, data, visualization):
-#     conditional_hue = None
-#     # if number <= 10:
-#     #     conditional_hue = 'Player'
-#     sns.set_style('darkgrid')
-#     sns.set_color_codes("pastel")
-#     if visualization == 'Scatter Plot':
-#         sns.scatterplot(x=x, y=y, data=data, hue=conditional_hue)
-#     elif visualization == 'Bar Chart':
-#         sns.barplot(x=x, y=y, data=data, ci=None, hue=conditional_hue)
-#     elif visualization == 'Box Plot':
-#         sns.boxplot(x=x, y=y, data=data, hue=conditional_hue)
-#     plt.title(f'{visualization} of {y} vs {x}')
-    
-    
-
-#     st.pyplot()
 
 def generate_plot(x_var, y_var, data, plot_type):
     plt.figure(figsize=(8, 6))
+    if plot_type == 'Heatmap':
+        # Select only numerical columns
+        numerical_data = data.select_dtypes(include='number')
+
+        # Compute correlation matrix
+        corr = numerical_data.corr()
+
+        # Generate heatmap
+        plt.figure(figsize=(10, 8))
+        ax = sns.heatmap(corr, annot=True, cmap='coolwarm')
+
+        plt.title('Correlation Heatmap')
+        plt.xticks(rotation=45)
+        plt.yticks(rotation=0)
+        
+        plt.tight_layout()
+        return st.pyplot(plt)
+        
     
     if plot_type == 'Bar Chart':
         ax = sns.barplot(x=x_var, y=y_var, data=data)
@@ -93,6 +95,7 @@ def generate_plot(x_var, y_var, data, plot_type):
         
     elif plot_type == 'Box Plot':
         ax = sns.boxplot(x=x_var, y=y_var, data=data)
+    
         
     # Adjust x-axis tick positions and labels for all chart types
     x_ticks = ax.get_xticks()
