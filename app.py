@@ -19,11 +19,14 @@ This app performs simple webscraping of NFL Football player stats data!
 st.sidebar.header('Filters')
 selected_year = st.sidebar.selectbox('Year', range(2022, 1990, -1))
 selected_category = st.sidebar.selectbox('Category', ['passing', 'rushing', 'receiving'])
+
 numerical_stats = {
-    'passing': ['Age', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate'],
+    'passing': ['Age', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate', 'QBR'],
     'rushing': ['Age', 'Att', 'Yds', 'TD', '1D', 'Lng', 'Y/A', 'Y/G', 'Fmb'],
     'receiving': ['Age', 'Tgt', 'Rec', 'Ctch%', 'Yds', 'Y/R', 'TD', '1D', 'Lng', 'Y/Tgt', 'R/G', 'Y/G', 'Fmb']
 }
+if selected_year < 2006:
+    numerical_stats['passing'] = ['Age', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate']
 
 # Load and Filter Data
 playerstats = utils.load_data(selected_year, selected_category)

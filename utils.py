@@ -38,8 +38,11 @@ def load_data(year, category):
         raw = df.drop(df[df.Age == 'Age'].index) # Deletes repeating headers in content
         raw = raw.fillna(0)
         playerstats = raw.drop(['Rk'], axis=1)
-        playerstats = playerstats.drop(['Yds.1', 'QBrec', 'TD%', 'Int%', 'AY/A', 'QBR', 'Sk%', 'NY/A', 'ANY/A', '4QC', 'GWD'], axis=1)
-        columns_to_convert = ['Age', 'G', 'GS', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate']
+        playerstats = playerstats.drop(['Yds.1', 'QBrec', 'TD%', 'Int%', 'AY/A', 'Sk%', 'NY/A', 'ANY/A', '4QC', 'GWD'], axis=1)
+        if year > 2005:
+            columns_to_convert = ['Age', 'G', 'GS', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate', 'QBR']
+        else:
+            columns_to_convert = ['Age', 'G', 'GS', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate']
         playerstats[columns_to_convert] = playerstats[columns_to_convert].apply(pd.to_numeric, errors='coerce', downcast='integer')
         # playerstats = playerstats.rename(columns=column_labels)
         return playerstats
