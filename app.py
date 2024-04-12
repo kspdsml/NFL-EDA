@@ -17,7 +17,7 @@ This app performs simple webscraping of NFL Football player stats data!
 
 # Sidebar - Filters
 st.sidebar.header('Filters')
-selected_year = st.sidebar.selectbox('Year', range(2022, 1990, -1))
+selected_year = st.sidebar.selectbox('Year', range(2023, 1990, -1))
 selected_category = st.sidebar.selectbox('Category', ['passing', 'rushing', 'receiving'])
 
 numerical_stats = {
