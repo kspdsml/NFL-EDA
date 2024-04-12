@@ -16,9 +16,11 @@ The NFL Data Explorer is an engaging and user-friendly tool that allows you to a
 To run the project locally, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/kspdsml/NFL-EDA.git`
-2. Install the required dependencies: `pip install -r requirements.txt`
-3. Run the Streamlit application: `streamlit run app.py`
-4. Open your browser and go to `http://localhost:8501` to access the application.
+2. CD into the project repository and create a virtual environment: `python3 -m venv venv`
+3. Activate the virtual environment: `source venv/bin/activate`
+4. Install the required dependencies: `pip install -r requirements.txt`
+5. Run the Streamlit application: `streamlit run app.py`
+6. Open your browser and go to `http://localhost:8501` to access the application.
 
 ## Features
 
