@@ -27,7 +27,7 @@ def load_data(year, category):
         raw = raw.fillna(0)
         playerstats = raw.drop(['Rk'], axis=1)
         columns_to_convert = ['Age', 'G', 'GS', 'Att', 'Yds', 'TD', '1D', 'Lng', 'Y/A', 'Y/G', 'Fmb']
-        playerstats[columns_to_convert] = playerstats[columns_to_convert].apply(pd.to_numeric, errors='coerce', downcast='integer')
+        playerstats[columns_to_convert] = playerstats[columns_to_convert].apply(pd.to_numeric, errors='coerce')
         # playerstats = playerstats.rename(columns=column_labels)
         return playerstats
     
@@ -43,7 +43,7 @@ def load_data(year, category):
             columns_to_convert = ['Age', 'G', 'GS', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate', 'QBR']
         else:
             columns_to_convert = ['Age', 'G', 'GS', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate']
-        playerstats[columns_to_convert] = playerstats[columns_to_convert].apply(pd.to_numeric, errors='coerce', downcast='integer')
+        playerstats[columns_to_convert] = playerstats[columns_to_convert].apply(pd.to_numeric, errors='coerce')
         # playerstats = playerstats.rename(columns=column_labels)
         return playerstats
     
@@ -55,7 +55,7 @@ def load_data(year, category):
         raw = raw.fillna(0)
         playerstats = raw.drop(['Rk'], axis=1)
         columns_to_convert = ['Age', 'G', 'GS', 'Tgt', 'Rec', 'Yds', 'Y/R', 'TD', '1D', 'Lng', 'Y/Tgt', 'R/G', 'Y/G', 'Fmb']
-        playerstats[columns_to_convert] = playerstats[columns_to_convert].apply(pd.to_numeric, errors='coerce', downcast='integer')
+        playerstats[columns_to_convert] = playerstats[columns_to_convert].apply(pd.to_numeric, errors='coerce')
         playerstats['Ctch%'] = playerstats['Rec'] / playerstats['Tgt']
         return playerstats
 
