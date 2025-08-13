@@ -38,7 +38,11 @@ def load_data(year, category):
         raw = df.drop(df[df.Age == 'Age'].index) # Deletes repeating headers in content
         raw = raw.fillna(0)
         playerstats = raw.drop(['Rk'], axis=1)
-        playerstats = playerstats.drop(['Yds.1', 'QBrec', 'TD%', 'Int%', 'AY/A', 'Sk%', 'NY/A', 'ANY/A', '4QC', 'GWD'], axis=1)
+        # Some seasons don't include all passing metrics. Drop the extras if they
+        # exist so older datasets load without raising a ``KeyError``.
+        columns_to_drop = ['Yds.1', 'QBrec', 'TD%', 'Int%', 'AY/A', 'Sk%',
+                           'NY/A', 'ANY/A', '4QC', 'GWD']
+        playerstats = playerstats.drop(columns=columns_to_drop, errors='ignore')
         if year > 2005:
             columns_to_convert = ['Age', 'G', 'GS', 'Cmp', 'Att', 'Cmp%', 'Yds', 'TD', 'Int', 'Lng', 'Y/A', 'Y/G', 'Rate', 'QBR']
         else:
