@@ -10,7 +10,7 @@ import utils
 st.title('NFL Data Explorer')
 
 st.markdown("""
-This app performs simple webscraping of NFL Football player stats data!
+This app performs simple web scraping of NFL Football player stats data!
 * **Python libraries:** base64, matplotlib, numpy, pandas, seaborn, streamlit
 * **Data source:** [pro-football-reference.com](https://www.pro-football-reference.com/).
 """)
