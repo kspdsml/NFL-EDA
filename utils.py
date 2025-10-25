@@ -7,7 +7,7 @@ import altair as alt
 
 
 
-# Download NBA player stats data
+# Download NFL player stats data
 # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806
 def filedownload(df):
     csv = df.to_csv(index=False)
